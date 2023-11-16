@@ -1,66 +1,127 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ma Page</title>
-    <!-- Inclure le lien vers la feuille de style de Tailwind CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body class="bg-gray-200 font-sans">
+    <style>
+       body {
+            background-color: #f2f2f2;
+            font-family: Arial, sans-serif;
+        }
 
-    <nav class="bg-blue-500 p-4">
-        <div class="container mx-auto">
-            <div class="flex items-center justify-between">
-                <div class="text-white text-lg font-bold">Logo</div>
-                <div class="flex space-x-4">
-                    <a href="afficherclientes.php" class="text-white">Clients</a>
-                    <a href="affichercomptes.php" class="text-white">Comptes</a>
-                    <a href="affichertransaction.php" class="text-white">Transactions</a>
-                </div>
+        nav {
+            background-color: #3498db;
+            padding: 10px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav a {
+            color: white;
+            margin-right: 10px;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 1.2em;
+        }
+
+        a.button {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        
+    <p>Logo</p>
+            <div>
+            <a href="index1.php" class="text-white">home</a>
+                <a href="afficherclientes.php">Clients</a>
+                <a href="affichercomptes.php">Comptes</a>
+                <a href="affichertransaction.php">Transactions</a>
             </div>
         </div>
     </nav>
 
-    <div class="container mx-auto my-8">
-
-
+    <div class="container">
         <?php
-        
-        require "db.php";
-         
-        $host = "localhost";
-        $user = "root";
-        $password = "";
-        $myDB = "myB";
+            require "db.php";
+            $host = "localhost";
+            $user = "root";
+            $password = "";
+            $myDB = "myB";
 
-        $connected = new mysqli($host, $user, $password, $myDB);
-        $selectQuery = "SELECT * FROM clients";
-        $result = $connected->query($selectQuery);
+            $connected = new mysqli($host, $user, $password, $myDB);
+            $selectQuery = "SELECT * FROM clients";
+            $result = $connected->query($selectQuery);
 
-        if ($result->num_rows > 0) {
-            echo "<h2 class='text-2xl font-bold mb-4'>Données des Clients</h2>";
-            echo "<table class='w-full border border-collapse'>";
-            echo "<tr class='bg-blue-500 text-white'><th class='p-2 border'>ID</th><th class='p-2 border'>Nom</th><th class='p-2 border'>Prénom</th><th class='p-2 border'>Date de naissance</th><th class='p-2 border'>Nationalité</th><th class='p-2 border'>Genre</th></tr>";
+            if ($result->num_rows > 0) {
+                echo "<h2>Données des Clients</h2>";
+                echo "<table>";
+                echo "<tr><th>ID</th><th>Nom</th><th>Prénom</th><th>Date de naissance</th><th>Nationalité</th><th>Genre</th></tr>";
 
-            while ($row = $result->fetch_assoc()) {
-                echo "<tr class='border'>";
-                echo "<td class='p-2 border'>" . $row["id"] . "</td>";
-                echo "<td class='p-2 border'>" . $row["nom"] . "</td>";
-                echo "<td class='p-2 border'>" . $row["prenom"] . "</td>";
-                echo "<td class='p-2 border'>" . $row["date_naissance"] . "</td>";
-                echo "<td class='p-2 border'>" . $row["nationalite"] . "</td>";
-                echo "<td class='p-2 border'>" . $row["genre"] . "</td>";
-                echo "</tr>";
+                while ($row = $result->fetch_assoc()) {
+                    echo "<tr>";
+                    echo "<td>" . $row["id"] . "</td>";
+                    echo "<td>" . $row["nom"] . "</td>";
+                    echo "<td>" . $row["prenom"] . "</td>";
+                    echo "<td>" . $row["date_naissance"] . "</td>";
+                    echo "<td>" . $row["nationalite"] . "</td>";
+                    echo "<td>" . $row["genre"] . "</td>";
+                    echo "</tr>";
+                }
+
+                echo "</table>";
+                echo "<a href='clientes.php' class='button'>Submit</a>";
+            } else {
+                echo "<p>Aucune donnée trouvée</p>";
             }
 
-            echo "</table>";
-            echo "<a href=" . "clientes.php>" . "submit</button>";
-        } else {
-            echo "<p class='text-lg'>Aucune donnée trouvée</p>";
-        }
-
-        $connected->close();
+            $connected->close();
         ?>
     </div>
 
