@@ -6,20 +6,51 @@
     <title>Formulaire Transaction</title>
 </head>
 <body>
-    <form id="transactionForm" action="transactions.php" method="POST">
-        <h2>Formulaire Transaction</h2>
+    <!-- //navbar// -->
+
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ma Page</title>
+    <!-- Inclure le lien vers la feuille de style de Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-200 font-sans">
+
+    <nav class="bg-blue-500 p-4">
+        <div class="container mx-auto">
+            <div class="flex items-center justify-between">
+                <div class="text-white text-lg font-bold">Logo</div>
+                <div class="flex space-x-4">
+                    <a href="afficherclientes.php" class="text-white">Clients</a>
+                    <a href="affichercomptes.php" class="text-white">Comptes</a>
+                    <a href="affichertransaction.php" class="text-white">Transactions</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+<!-- //+++++++++++++++++++++++++++ -->
+
+ <form id="transactionForm" action="transactions.php" method="POST">
+     <h2>Formulaire Transaction</h2>
         
         <label for="montant">Montant :</label>
         <input type="text" id="montant" name="montant" required><br><br>
 
-        <label for="type">Type :</label>
-        <input type="text" name="type">
-
+        <label for="type" >Type :</label>
+        <select name="type">
+            <option value="Crédit">Crédit</option>
+            <option value="Débit">Débit</option>
+        </select>
+        
         <button type="submit" name="envoyer">Envoyer</button>
+        <button><a href="affichertransaction.php">transfier</a></button>
     </form>
 
     <?php
-    // Connexion à la base de données
+    
     require "db.php";
  
     $host = "localhost";
@@ -33,7 +64,8 @@
         die("Connection failed: " . $connected->connect_error);
     }
 
-    // Création de la table transactions
+    //++++++++++++++++++++++++++++creation de la table+++++++++++++++++++++++++++++++++
+
     $createTableQuery = "CREATE TABLE IF NOT EXISTS transactions (
         id INT AUTO_INCREMENT PRIMARY KEY,
         Montant VARCHAR(10) NOT NULL,
@@ -60,31 +92,8 @@
         }
     }
 
-    // Affichage des données de la base de données
-    $selectQuery = "SELECT * FROM transactions";
-    $result = $connected->query($selectQuery);
 
-    if ($result->num_rows > 0) {
-        echo "<h2>Données des Transactions</h2>";
-        echo "<table border='1'>";
-        echo "<tr><th>ID</th><th>Montant</th><th>Type</th></tr>";
-
-        while ($row = $result->fetch_assoc()) {
-            echo "<tr>";
-            echo "<td>" . $row["id"] . "</td>";
-            echo "<td>" . $row["Montant"] . "</td>";
-            echo "<td>" . $row["Type"] . "</td>";
-            echo "</tr>";
-        }
-
-        echo "</table>";
-    } else {
-        echo "<p>Aucune donnée trouvée</p>";
-    }
-
-    $connected->close();
+  
     ?>
 </body>
 </html>
-
-
