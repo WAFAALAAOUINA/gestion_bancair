@@ -6,17 +6,14 @@
     <title>Formulaire Transaction</title>
 </head>
 <body>
-    <form id="transactionForm" action="transaction.php" method="POST">
+    <form id="transactionForm" action="transactions.php" method="POST">
         <h2>Formulaire Transaction</h2>
         
         <label for="montant">Montant :</label>
         <input type="text" id="montant" name="montant" required><br><br>
 
         <label for="type">Type :</label>
-        <select name="type">
-            <option value="Crédit">Crédit</option>
-            <option value="Débit">Débit</option>
-        </select>
+        <input type="text" name="type">
 
         <button type="submit" name="envoyer">Envoyer</button>
     </form>
@@ -40,7 +37,7 @@
     $createTableQuery = "CREATE TABLE IF NOT EXISTS transactions (
         id INT AUTO_INCREMENT PRIMARY KEY,
         Montant VARCHAR(10) NOT NULL,
-        Type VARCHAR(10) NOT NULL
+        Type ENUM('Débit', 'Crédit') NOT NULL
     )";
 
     if ($connected->query($createTableQuery)) {
@@ -89,3 +86,5 @@
     ?>
 </body>
 </html>
+
+
