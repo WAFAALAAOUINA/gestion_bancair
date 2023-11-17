@@ -86,23 +86,24 @@
     <div>
         <a href="afficherclientes.php" class="text-white">Clients</a>
         <a href="affichercomptes.php" class="text-white">Comptes</a>
-        <a href="affichertransaction.php" class="text-white">Transactions</a>
+        <a href="transactions.php" class="text-white">Transactions</a>
     </div>
 </nav>
 
-<form id="compteForm" action="comptes.php" method="POST">
-    <h2>Formulaire compts</h2>
+<form id="compteForm" action="transactions.php" method="POST">
+    <h2>Formulaire transactions</h2>
+    
+    <label for="Montant">id:</label>
+    <input type="text" id="id" name="id" required><br><br>
 
-    <label for="RIB">RIB :</label>
-    <input type="text" id="RIB" name="RIB" required><br><br>
+    <label for="Montant">Montant:</label>
+    <input type="number" id="Montant" name="Montant" required><br><br>
 
-    <label for="balance">Balance :</label>
-    <input type="text" id="balance" name="balance" required><br><br>
+    <label for="Type">Type:</label> 
+    <input type="text" id="Type" name="Type" required><br><br>
+    <input  type="hidden" name="compt_id" value="<?php echo $_POST['compt_id'] ?>">
 
-    <label for="devise">Devise :</label>
-    <input type="text" id="devise" name="devise" required><br><br>
-
-    <div id="errorMessages"></div>
+   
 
     <button type="submit" name="envoyer">Envoyer</button>
     <!-- <button><a href="affichercomptes.php">transfier</a></button> -->
@@ -122,11 +123,12 @@ if ($connected->connect_error) {
     die("Connection failed: " . $connected->connect_error);
 }
 
-$createTableQuery = "CREATE TABLE IF NOT EXISTS compts (
+$createTableQuery = "CREATE TABLE IF NOT EXISTS transactions (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    RIB FLOAT NOT NULL,
-    balance FLOAT NOT NULL,
-    devise VARCHAR(10) NOT NULL
+    Montant FLOAT NOT NULL,
+    Type VARCHAR (20),
+    compts_id INT,
+    FOREIGN KEY (compts_id) REFERENCES compts(id)
 )";
 
 if ($connected->query($createTableQuery)) {
@@ -136,11 +138,15 @@ if ($connected->query($createTableQuery)) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["envoyer"])) {
-    $balance = $_POST["balance"];
-    $devise = $_POST["devise"];
-    $RIB = $_POST["RIB"];
+    $Montant = $_POST["Montant"];
+    $Type = $_POST["Type"];
+    $ab=$_POST['compt_id'];
+    echo $_POST['compt_id'];
 
-    $sqlk = "INSERT INTO compts (balance, devise, RIB) VALUES ('$balance', '$devise', '$RIB')";
+    
+    
+
+    $sqlk = "INSERT INTO transactions (montant, type, compts_id) VALUES ('$Montant', '$Type', '$ab')";
 
     if ($connected->query($sqlk)) {
         echo "Record inserted successfully";

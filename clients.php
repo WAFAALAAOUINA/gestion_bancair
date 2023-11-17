@@ -90,7 +90,7 @@
     
     </nav>
 
-    <form id="contactForm" action="clientes.php" method="POST">
+    <form id="contactForm" action="clients.php" method="POST">
         <h2>Contactez-nous</h2>
         <label for="name">Nom :</label>
         <input type="text" id="name" name="name" required><br>

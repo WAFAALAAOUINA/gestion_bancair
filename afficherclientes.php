@@ -71,6 +71,15 @@
             border-radius: 5px;
             margin-top: 10px;
         }
+        .submit{
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -96,15 +105,18 @@
             $myDB = "myB";
 
             $connected = new mysqli($host, $user, $password, $myDB);
+            
             $selectQuery = "SELECT * FROM clients";
             $result = $connected->query($selectQuery);
-
+ 
             if ($result->num_rows > 0) {
+                
                 echo "<h2>Données des Clients</h2>";
                 echo "<table>";
                 echo "<tr><th>ID</th><th>Nom</th><th>Prénom</th><th>Date de naissance</th><th>Nationalité</th><th>Genre</th></tr>";
 
                 while ($row = $result->fetch_assoc()) {
+                
                     echo "<tr>";
                     echo "<td>" . $row["id"] . "</td>";
                     echo "<td>" . $row["nom"] . "</td>";
@@ -112,11 +124,23 @@
                     echo "<td>" . $row["date_naissance"] . "</td>";
                     echo "<td>" . $row["nationalite"] . "</td>";
                     echo "<td>" . $row["genre"] . "</td>";
-                    echo "</tr>";
+                    echo "<td><form action='compts.php' method='post'>
+                            <input type='hidden' name='client_id' value='" . $row["id"] . "'>
+                            <button  class='submit' type='submit'>Ajouter compt</button>
+                            </form>
+                            <form action='afficherlescomptes.php' method='post'>
+                            <input type='hidden' name='client_id' value='" . $row["id"] . "'>
+                            <button  class='submit'type='submit'>Afficher comptes</button>
+
+                          </form>
+                        </td>";
+                    
+        
+                    
                 }
 
                 echo "</table>";
-                echo "<a href='clientes.php' class='button'>Submit</a>";
+                echo "<a href='clientes.php' class='button'>Ajouter clients</a>";
             } else {
                 echo "<p>Aucune donnée trouvée</p>";
             }

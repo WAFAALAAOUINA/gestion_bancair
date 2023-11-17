@@ -72,6 +72,17 @@
             border-radius: 5px;
             margin-top: 10px;
         }
+        .submit{
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+
     </style>
 </head>
 <body>
@@ -91,31 +102,54 @@
     <div class="container">
         <?php
             require "db.php";
+            
             $host = "localhost";
             $user = "root";
             $password = "";
             $myDB = "myB";
 
             $connected = new mysqli($host, $user, $password, $myDB);
-            $selectQuery = "SELECT nom as client_name,prenom as client_prenom,balance,devise,rib FROM clients INNER JOIN compts where clients.id=compts.client_id;";
+
+            
+            $selectQuery = "SELECT*from compts;";
             $result = $connected->query($selectQuery);
 
             if ($result->num_rows > 0) {
                 echo "<h2>Données des Comptes</h2>";
                 echo "<table>";
-                echo "<tr><th>ID</th><th>RIB</th><th>Balance</th><th>Devise</th></tr>";
+                echo "<tr><th>RIB</th><th>Balance</th><th>Devise</th> <th>action</th></tr>";
 
                 while ($row = $result->fetch_assoc()) {
                     echo "<tr>";
-                    echo "<td>" . $row["rib"] . "</td>";
+                    echo "<td>" . $row["RIB"] . "</td>";
                     echo "<td>" . $row["balance"] . "</td>";
                     echo "<td>" . $row["devise"] . "</td>";
-                    echo "<td>" . $row["client_name"] . "</td>";
+                
+
+
+
+                    echo "
+                    <td><form action='transactions.php' method='post'>
+                    <input type='hidden' name='compt_id' value='" . $row["id"] . "'>
+                    <button   class='submit' type='submit'>Ajouter transaction</button>
+                    </form>
+                    <form action='transactioncompt.php' method='post'>
+                    <input type='hidden' name='compt_id' value='" . $row["id"] . "'>
+                    <button class='submit' type='submit'>Afficher transaction</button>
+
+                  </form>
+                </td>
+                    ";
                     echo "</tr>";
                 }
 
+
+
+
+                
+
                 echo "</table>";
-                echo "<a href='comptes.php' class='button'>Submit</a>";
+                
             } else {
                 echo "<p>Aucune donnée trouvée</p>";
             }

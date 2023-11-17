@@ -90,14 +90,22 @@
     <div class="container">
         <?php
             require "db.php";
+
+
             $host = "localhost";
             $user = "root";
             $password = "";
             $myDB = "myB";
 
             $connected = new mysqli($host, $user, $password, $myDB);
+
             $selectQuery = "SELECT * FROM transactions";
+            
             $result = $connected->query($selectQuery);
+
+            $selectQuery = "SELECT * FROM transactions;";
+            $result = $connected->query($selectQuery);
+
 
             if ($result->num_rows > 0) {
                 echo "<h2>Données des Transactions</h2>";
@@ -113,7 +121,7 @@
                 }
 
                 echo "</table>";
-                echo "<a href='transactions.php' class='button'>Submit</a>";
+               
             } else {
                 echo "<p>Aucune donnée trouvée</p>";
             }

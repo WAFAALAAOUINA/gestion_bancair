@@ -90,7 +90,7 @@
         </div>
     </nav>
 
-    <form id="compteForm" action="comptes.php" method="POST">
+    <form id="compteForm" action="compts.php" method="POST">
         <h2>Formulaire compts</h2>
 
         <label for="RIB">RIB :</label>
@@ -101,7 +101,7 @@
 
         <label for="devise">Devise :</label>
         <input type="text" id="devise" name="devise" required><br><br>
-
+        <input  type="hidden" name="client_id" value="<?php echo $_POST['client_id']?>">
         <div id="errorMessages"></div>
 
         <button type="submit" name="envoyer">Envoyer</button>
@@ -115,9 +115,9 @@
     $user = "root";
     $password = "";
     $myDB = "myB";
+    $ab= $_POST["client_id"];
 
     $connected = new mysqli($host, $user, $password, $myDB);
-
     if ($connected->connect_error) {
         die("Connection failed: " . $connected->connect_error);
     }
@@ -126,8 +126,11 @@
         id INT AUTO_INCREMENT PRIMARY KEY,
         RIB FLOAT NOT NULL,
         balance FLOAT NOT NULL,
-        devise VARCHAR(10) NOT NULL
+        devise VARCHAR(10) NOT NULL,
+        client_id INT,
+        FOREIGN KEY (client_id) REFERENCES clients(id)
     )";
+
 
     if ($connected->query($createTableQuery)) {
         echo "Table created successfully";
@@ -139,8 +142,11 @@
         $balance = $_POST["balance"];
         $devise = $_POST["devise"];
         $RIB = $_POST["RIB"];
+       $ab=$_POST['client_id'];
+        echo $_POST['client_id'];
 
-        $sqlk = "INSERT INTO compts (balance, devise, RIB) VALUES ('$balance', '$devise', '$RIB')";
+    
+        $sqlk = "INSERT INTO compts (balance, devise, RIB,client_id) VALUES ('$balance', '$devise', '$RIB','$ab')";
 
         if ($connected->query($sqlk)) {
             echo "Record inserted successfully";
